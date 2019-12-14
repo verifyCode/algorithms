@@ -105,9 +105,6 @@ public class Test {
     public static void main(String[] args) {
         Test test = new Test();
         int[] ints = SortTestHelper.generateRandomArray(10, 1, 10);
-//        selectionSort(ints);
-//        insertSort(ints);
-//        test.mergeSort(ints);
         test.quickSort(ints);
         System.out.println(Arrays.toString(ints));
     }
