@@ -14,7 +14,7 @@ public class UF3 {
         this.count = count;
         this.rank = new int[count];
         for (int i = 0; i < rank.length; i++) {
-            rank[i] = i;
+            rank[i] = 1;
         }
     }
 
