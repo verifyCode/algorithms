@@ -60,7 +60,7 @@ public class MergeSort {
     /*** 自顶向上的归并排序 ***/
     public static void mergeSortBU(int[] array) {
 
-//1 2 4 8
+        //1 2 4 8
         int n = array.length;
         //外层循环 对进行merge的元素个数进行遍历 每次sz * 2
         //第一轮 [0,sz-1],[sz,2sz-1]归并
