@@ -7,14 +7,15 @@ package com.list;
 public class Main {
 
     public static void main(String[] args) {
-        LinkedList linkedList = new LinkedList();
+        LinkedList2 linkedList = new LinkedList2();
 
         for (int i = 0; i < 10; i++) {
             linkedList.addFirst(i);
         }
-        linkedList.addFirst(2);
         System.out.println(linkedList.toString());
-        linkedList.removeElement(2);
+        System.out.println(linkedList.remove(2));
+        System.out.println(linkedList.toString());
+        System.out.println(linkedList.removeFirst());
         System.out.println(linkedList.toString());
     }
 }

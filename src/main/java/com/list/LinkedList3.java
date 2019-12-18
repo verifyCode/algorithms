@@ -1,13 +1,12 @@
 package com.list;
 
 /**
- * LinkedList with dummyHead
+ * 链表与递归
  *
  * @author xjn
  * @since 2019-12-17
  */
-public class LinkedList2<E> implements List<E> {
-
+public class LinkedList3<E> implements List<E> {
     private class Node {
         private E e;
         private Node next;
@@ -34,7 +33,7 @@ public class LinkedList2<E> implements List<E> {
     private Node dummyHead;
     private int size;
 
-    public LinkedList2() {
+    public LinkedList3() {
         dummyHead = new Node();
         size = 0;
     }
@@ -51,13 +50,7 @@ public class LinkedList2<E> implements List<E> {
 
     @Override
     public void add(E e, int index) {
-        checkIndex(index);
-        Node prev = dummyHead;
-        for (int i = 0; i < index; i++) {
-            prev = prev.next;
-        }
-        prev.next = new Node(e, prev.next);
-        size++;
+
     }
 
     @Override
@@ -72,12 +65,7 @@ public class LinkedList2<E> implements List<E> {
 
     @Override
     public E get(int index) {
-        checkIndex(index);
-        Node cur = dummyHead.next;
-        for (int i = 0; i < index; i++) {
-            cur = cur.next;
-        }
-        return cur.e;
+        return null;
     }
 
     @Override
@@ -92,40 +80,17 @@ public class LinkedList2<E> implements List<E> {
 
     @Override
     public void set(E e, int index) {
-        checkIndex(index);
-        Node cur = dummyHead.next;
-        for (int i = 0; i < index; i++) {
-            cur = cur.next;
-        }
-        cur.e = e;
+
     }
 
     @Override
     public boolean contains(E e) {
-        Node cur = dummyHead.next;
-        while (cur != null) {
-            if (e.equals(cur)) {
-                return true;
-            }
-            cur = cur.next;
-        }
         return false;
     }
 
     @Override
     public E remove(int index) {
-        checkIndex(index);
-        Node cur = dummyHead;
-        for (int i = 0; i < index; i++) {
-            cur = cur.next;
-        }
-        Node prev = cur;
-        Node delNode = prev.next;
-        prev.next = delNode.next;
-        E ret = delNode.e;
-        delNode = null;
-        size--;
-        return ret;
+        return null;
     }
 
     @Override
