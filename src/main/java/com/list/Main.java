@@ -7,15 +7,21 @@ package com.list;
 public class Main {
 
     public static void main(String[] args) {
-        LinkedList2 linkedList = new LinkedList2();
+        LinkedList3 linkedList = new LinkedList3();
 
         for (int i = 0; i < 10; i++) {
             linkedList.addFirst(i);
+
         }
-        System.out.println(linkedList.toString());
-        System.out.println(linkedList.remove(2));
-        System.out.println(linkedList.toString());
-        System.out.println(linkedList.removeFirst());
-        System.out.println(linkedList.toString());
+        System.out.println(linkedList);
+//        linkedList.removeElement(2);
+//        System.out.println(linkedList.get(12));
+//        System.out.println(linkedList.contains(2));
+//        linkedList.set(1,1);
+//        linkedList.set(1,2);
+//        linkedList.remove(1);
+        linkedList.add(1,1);
+        linkedList.add(2,1);
+        System.out.println(linkedList);
     }
 }

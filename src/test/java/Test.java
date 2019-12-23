@@ -9,6 +9,21 @@ import java.util.Arrays;
  */
 public class Test {
 
+    public void insertSort(int[] array) {
+        for (int i = 1; i < array.length; i++) {
+            int v = array[i];
+            int j;
+            for (j = i; j > 0; j--) {
+                if (array[j - 1] > v) {
+                    array[j] = array[j - 1];
+                } else {
+                    break;
+                }
+            }
+            array[j] = v;
+        }
+    }
+
     public void selectSort(int[] array) {
         for (int i = 0; i < array.length; i++) {
             int minIndex = i;
@@ -21,27 +36,24 @@ public class Test {
         }
     }
 
-    public void insertSort(int[] array) {
-        for (int i = 1; i < array.length; i++) {
-            int v = array[i];
-            int j;
-            for (j = i; j > 0; j--) {
-                if (array[j - 1] > v) {
-                    array[j] = array[j - 1];
-                }else {
-                    break;
-                }
-            }
-            array[j] = v;
-        }
+    public void mergeSort(int[] array) {
+
     }
 
+    public void sort(int[] array, int l, int r) {
+        if (l >= r) {
+            return;
+        }
+        int mid = (l + r) / 2;
+        sort(array, l, mid);
+        sort(array,mid +1,r);
+    }
 
     public static void main(String[] args) {
         Test test = new Test();
         int[] ints = SortTestHelper.generateRandomArray(10, 1, 10);
-//        test.selectSort(ints);
-        test.insertSort(ints);
+        test.selectSort(ints);
+//        test.insertSort(ints);
         System.out.println(Arrays.toString(ints));
     }
 }

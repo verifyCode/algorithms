@@ -50,7 +50,22 @@ public class LinkedList3<E> implements List<E> {
 
     @Override
     public void add(E e, int index) {
+        checkIndex(index);
+        size++;
+        addRecursive(dummyHead,e,index);
+    }
 
+    private Node addRecursive(Node head, E e, int index) {
+        if (head == null) {
+            return null;
+        }
+        if (index == 0) {
+            Node temp = head.next;
+            Node node = new Node(e);
+            head.next = node;
+            node.next = temp;
+        }
+        return addRecursive(head.next, e, index - 1);
     }
 
     @Override
@@ -65,7 +80,18 @@ public class LinkedList3<E> implements List<E> {
 
     @Override
     public E get(int index) {
-        return null;
+        checkIndex(index);
+        return getRecursive(dummyHead, index);
+    }
+
+    private E getRecursive(Node node, int index) {
+        if (node == null) {
+            return null;
+        }
+        if (index == 0) {
+            return node.e;
+        }
+        return getRecursive(node.next, index - 1);
     }
 
     @Override
@@ -80,17 +106,55 @@ public class LinkedList3<E> implements List<E> {
 
     @Override
     public void set(E e, int index) {
+        checkIndex(index);
+        setRecursive(dummyHead, e, index + 1);
+    }
 
+    private Node setRecursive(Node node, E e, int index) {
+        if (node == null) {
+            return null;
+        }
+        if (index == 0) {
+            node.e = e;
+            return node;
+        }
+        return setRecursive(node.next, e, index - 1);
     }
 
     @Override
     public boolean contains(E e) {
-        return false;
+        return containsRecursive(dummyHead, e) != null;
+    }
+
+    private E containsRecursive(Node node, E e) {
+        if (node == null) {
+            return null;
+        }
+        if (node.e == e) {
+            return e;
+        }
+        return containsRecursive(node.next, e);
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        checkIndex(index);
+        size--;
+        return removeRecursive(dummyHead, index).e;
+    }
+
+    private Node removeRecursive(Node node, int index) {
+        if (node == null) {
+            return null;
+        }
+        if (node.next == null) {
+            return node;
+        }
+        if (index == 0) {
+            node.next = node.next.next;
+        }
+        return removeRecursive(node.next, index - 1);
+
     }
 
     @Override
@@ -105,7 +169,20 @@ public class LinkedList3<E> implements List<E> {
 
     @Override
     public void removeElement(E e) {
+        removeElementRecursive(dummyHead, e);
+    }
 
+    private Node removeElementRecursive(Node head, E e) {
+        if (head == null) {
+            return null;
+        }
+        Node res = removeElementRecursive(head.next, e);
+        if (head.e == e) {
+            return res;
+        } else {
+            head.next = res;
+        }
+        return head;
     }
 
     @Override
