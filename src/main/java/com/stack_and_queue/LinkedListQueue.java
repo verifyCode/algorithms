@@ -15,26 +15,26 @@ public class LinkedListQueue<E> implements Queue<E> {
 
     @Override
     public int getSize() {
-        return 0;
+        return linkedList2.getSize();
     }
 
     @Override
     public void enQueue(E e) {
-
+        linkedList2.addLast(e);
     }
 
     @Override
     public E deQueue() {
-        return null;
+        return linkedList2.removeFirst();
     }
 
     @Override
     public E getFront() {
-        return null;
+        return linkedList2.getFirst();
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return linkedList2.isEmpty();
     }
 }

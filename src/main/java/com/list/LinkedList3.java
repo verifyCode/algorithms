@@ -1,5 +1,7 @@
 package com.list;
 
+import java.util.Objects;
+
 /**
  * 链表与递归
  *
@@ -52,7 +54,7 @@ public class LinkedList3<E> implements List<E> {
     public void add(E e, int index) {
         checkIndex(index);
         size++;
-        addRecursive(dummyHead,e,index);
+        addRecursive(dummyHead, e, index);
     }
 
     private Node addRecursive(Node head, E e, int index) {
@@ -150,8 +152,13 @@ public class LinkedList3<E> implements List<E> {
         if (node.next == null) {
             return node;
         }
+        //index= 1
+        //node.next=8
+        //dummyHead->9->8->7->6->5->4->3->2->1->0->NULL
         if (index == 0) {
             node.next = node.next.next;
+        } else if (index < 0) {
+            return node;
         }
         return removeRecursive(node.next, index - 1);
 
@@ -172,12 +179,16 @@ public class LinkedList3<E> implements List<E> {
         removeElementRecursive(dummyHead, e);
     }
 
+    //语义:返回被删除链表的头结点
     private Node removeElementRecursive(Node head, E e) {
         if (head == null) {
             return null;
         }
+        //e = 9
+        //head.next=8
+        //dummyHead->9->8->7->6->5->4->3->2->1->0->NULL
         Node res = removeElementRecursive(head.next, e);
-        if (head.e == e) {
+        if (Objects.equals(e, head.e)) {
             return res;
         } else {
             head.next = res;
@@ -194,6 +205,7 @@ public class LinkedList3<E> implements List<E> {
 //            res.append(cur + "->");
 //            cur = cur.next;
 //        }
+        res.append("dummyHead->");
         for (Node cur = dummyHead.next; cur != null; cur = cur.next)
             res.append(cur + "->");
         res.append("NULL");

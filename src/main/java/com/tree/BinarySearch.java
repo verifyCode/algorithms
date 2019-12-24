@@ -23,9 +23,12 @@ public class BinarySearch {
         return -1;
     }
 
+    public static int binarySearchRecursive(int[] array, int target) {
+        return binarySearchRecursive(array, 0, array.length, target);
+    }
 
-    public static int binarySearchRecursive(int[] array, int l, int r, int target) {
-        if (l > r) {
+    private static int binarySearchRecursive(int[] array, int l, int r, int target) {
+        if (l >= r) {
             return -1;
         }
         int mid = (l + r) / 2;
@@ -36,5 +39,11 @@ public class BinarySearch {
         } else {
             return binarySearchRecursive(array, mid + 1, r, target);
         }
+    }
+
+    public static void main(String[] args) {
+        int[] ints = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+        System.out.println(binarySearch(ints, 4));
+        System.out.println(binarySearchRecursive(ints, 4));
     }
 }
