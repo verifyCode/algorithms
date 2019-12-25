@@ -348,11 +348,11 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
     public static void main(String[] args) {
         BST bst = new BST();
 //        int[] array = new int[]{8, 7, 12, 12, 0, 5, 1, 11, 2, 8, 11, 7, 11, 12, 12, 8, 12, 8, 10, 7, 7, 12, 7, 8, 3, 7, 3, 13, 8, 14, 13, 14, 13, 12, 8, 12, 10, 7, 12, 9, 2, 7, 0, 3, 14, 7, 10, 4, 10, 10};
-//        for (int i = 0; i < 50; i++) {
-//            Random random = new Random();
-//            int randInt = random.nextInt(15);
-//            bst.add(Math.abs(randInt));
-//        }
+        for (int i = 0; i < 10; i++) {
+            Random random = new Random();
+            int randInt = random.nextInt(10);
+            bst.add(Math.abs(randInt));
+        }
 //        BST.add(bst, array);
         bst.bfs();
         System.out.println();
@@ -364,12 +364,13 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
 //        bst.bfs();
 //        System.out.println("\nbst.dfs:");
 //        bst.dfs();
+        bst.inOrder();
 //        System.out.println("bst.removeMaximum:" + bst.removeMaximum());
 //        System.out.println(bst);
 //        System.out.println("bst.removeMinimum:" + bst.removeMinimum());
 //        System.out.println(bst);
 //        System.out.println("bst.remove:8");
 //        bst.remove(8);
-        System.out.println(bst);
+//        System.out.println(bst);
     }
 }
