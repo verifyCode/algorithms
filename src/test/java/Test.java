@@ -36,24 +36,38 @@ public class Test {
         }
     }
 
-    public void mergeSort(int[] array) {
-
+    public static void quickSort(int[] array) {
+        quickSort(array, 0, array.length - 1);
     }
 
-    public void sort(int[] array, int l, int r) {
+    private static void quickSort(int[] array, int l, int r) {
         if (l >= r) {
             return;
         }
-        int mid = (l + r) / 2;
-        sort(array, l, mid);
-        sort(array,mid +1,r);
+        int p = partition(array, l, r);
+        quickSort(array, l, p);
+        quickSort(array, p + 1, r);
+    }
+
+    public static int partition(int[] array, int l, int r) {
+        int v = array[l];
+        int j = l;
+        for (int i = l + 1; i <= r; i++) {
+            if (array[i] < v) {
+                SortTestHelper.swap(array, i, j + 1);
+                j++;
+            }
+        }
+        SortTestHelper.swap(array, j, l);
+        return j;
     }
 
     public static void main(String[] args) {
         Test test = new Test();
         int[] ints = SortTestHelper.generateRandomArray(10, 1, 10);
-        test.selectSort(ints);
+//        test.selectSort(ints);
 //        test.insertSort(ints);
+        test.quickSort(ints);
         System.out.println(Arrays.toString(ints));
     }
 }

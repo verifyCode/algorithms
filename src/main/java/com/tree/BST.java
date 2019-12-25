@@ -235,10 +235,13 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
             }
 
             //左子树和右子树都不为空
-            Node successor = new Node(minimumRecursive(node.right));
+            //找到比待删除节点大的最小的节点,即待删除节点右子树的最小节点
+            //用这个节点顶替待删除节点的位置
+            Node successor = minimumRecursive(node.right);
+            //removeMinimumRecursive返回的是被删除最小值之后的根节点
             successor.right = removeMinimumRecursive(node.right);
             successor.left = node.left;
-            node = null;
+            node.left = node.right = null;
             return successor;
 
         } else if (e.compareTo(node.e) < 0) {
@@ -345,11 +348,11 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
     public static void main(String[] args) {
         BST bst = new BST();
 //        int[] array = new int[]{8, 7, 12, 12, 0, 5, 1, 11, 2, 8, 11, 7, 11, 12, 12, 8, 12, 8, 10, 7, 7, 12, 7, 8, 3, 7, 3, 13, 8, 14, 13, 14, 13, 12, 8, 12, 10, 7, 12, 9, 2, 7, 0, 3, 14, 7, 10, 4, 10, 10};
-        for (int i = 0; i < 50; i++) {
-            Random random = new Random();
-            int randInt = random.nextInt(15);
-            bst.add(Math.abs(randInt));
-        }
+//        for (int i = 0; i < 50; i++) {
+//            Random random = new Random();
+//            int randInt = random.nextInt(15);
+//            bst.add(Math.abs(randInt));
+//        }
 //        BST.add(bst, array);
         bst.bfs();
         System.out.println();
@@ -365,7 +368,7 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
 //        System.out.println(bst);
 //        System.out.println("bst.removeMinimum:" + bst.removeMinimum());
 //        System.out.println(bst);
-//        System.out.println("bst.remove:5");
+//        System.out.println("bst.remove:8");
 //        bst.remove(8);
         System.out.println(bst);
     }
