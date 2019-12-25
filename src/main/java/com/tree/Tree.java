@@ -15,6 +15,7 @@ public interface Tree<E extends Comparable> {
 
     boolean contains(E e);
 
+    //二叉树的前序遍历实际上是深度优先遍历
     void preOrder();
 
     void inOrder();
@@ -34,5 +35,7 @@ public interface Tree<E extends Comparable> {
     E removeMaximum();
 
     E removeMinimum();
+
+    void remove(E e);
 
 }
