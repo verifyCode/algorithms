@@ -1,4 +1,4 @@
-package com.tree.set;
+package com.set;
 
 import com.tree.BST;
 
@@ -8,7 +8,7 @@ import com.tree.BST;
  * @author xjn
  * @since 2019-12-25
  */
-public class BSTSet<E extends Comparable<E>> implements Set<E> {
+public class BSTSet<E extends Comparable<E>> implements MySet<E> {
 
     private BST<E> bst;
 

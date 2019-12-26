@@ -1,10 +1,10 @@
-package com.tree.set;
+package com.set;
 
 /**
  * @author xjn
  * @since 2019-12-25
  */
-public interface Set<E> {
+public interface MySet<E> {
     void add(E e);
 
     void remove(E e);

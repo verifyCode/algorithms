@@ -1,4 +1,4 @@
-package com.tree.set;
+package com.set;
 
 import com.list.LinkedList3;
 
@@ -6,11 +6,11 @@ import com.list.LinkedList3;
  * @author xjn
  * @since 2019-12-25
  */
-public class LinkedListSet<E> implements Set<E> {
+public class LinkedList<E> implements MySet<E> {
 
     private LinkedList3<E> linkedList;
 
-    public LinkedListSet() {
+    public LinkedList() {
         linkedList = new LinkedList3<>();
     }
 
