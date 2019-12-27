@@ -20,6 +20,14 @@ public class Array<E> {
         this(10);
     }
 
+    public Array(E[] array) {
+        this.data = (E[]) new Object[array.length];
+        for (int i = 0; i < array.length; i++) {
+            this.data[i] = array[i];
+        }
+        size = array.length;
+    }
+
     // 获取数组的容量
     public int getCapacity() {
         return data.length;
@@ -159,4 +167,21 @@ public class Array<E> {
         data = newData;
     }
 
+    public void swap(int a, int b) {
+        E c = this.data[a];
+        data[a] = data[b];
+        data[b] = c;
+    }
+
+    public static void main(String[] args) {
+        Array array = new Array();
+        for (int i = 0; i < 20; i++) {
+            array.addLast(i);
+        }
+        System.out.println(array);
+        System.out.println(array.removeLast());
+        System.out.println(array);
+        array.set(array.getSize()-1,19);
+        System.out.println(array);
+    }
 }
