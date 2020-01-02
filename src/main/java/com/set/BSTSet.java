@@ -1,6 +1,6 @@
 package com.set;
 
-import com.tree.BST;
+import com.tree.bst.BST;
 
 /**
  * 基于二分搜索树

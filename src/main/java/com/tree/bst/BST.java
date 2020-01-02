@@ -1,4 +1,6 @@
-package com.tree;
+package com.tree.bst;
+
+import com.tree.Tree;
 
 import java.util.LinkedList;
 import java.util.Queue;

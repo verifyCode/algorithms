@@ -218,4 +218,40 @@ public class LinkedList3<E> implements List<E> {
             throw new IllegalArgumentException("Error index");
         }
     }
+
+    public void reverseList() {
+//        dummyHead.next = reverseListRecursive(dummyHead.next);
+        dummyHead.next = reverseListLoop(dummyHead.next);
+    }
+
+    private Node reverseListRecursive(Node node) {
+        if (node == null || node.next == null) {
+            return node;
+        }
+        Node rHead = reverseListRecursive(node.next);
+        node.next.next = node;
+        node.next = null;
+        return rHead;
+    }
+
+    private Node reverseListLoop(Node node) {
+        if (node == null) {
+            return null;
+        }
+        //上一个节点
+        Node p0 = null;
+        //当前节点
+        Node p1 = node;
+        //下一个节点
+        Node p2 = node.next;
+        while (p1 != null) {
+            p1.next = p0;
+            p0 = p1;
+            p1 = p2;
+            if (p2 != null) {
+                p2 = p2.next;
+            }
+        }
+        return p0;
+    }
 }
