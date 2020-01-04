@@ -111,6 +111,23 @@ public class BST<E extends Comparable<E>> implements Tree<E> {
         inOrderRecursive(node.right);
     }
 
+    private void inOrderLoop(Node node) {
+        if (node == null) {
+            return;
+        }
+        Stack<Node> stack = new Stack<>();
+        while (node != null || !stack.isEmpty()) {
+            if (node != null) {
+                stack.push(node);
+                node = node.left;
+            } else {
+                node = stack.pop();
+                System.out.print(node.e + " ");
+                node = node.right;
+            }
+        }
+    }
+
     @Override
     public void postOrder() {
         postOrderRecursive(root);
