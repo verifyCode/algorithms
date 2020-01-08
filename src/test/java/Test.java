@@ -1,6 +1,9 @@
 import com.sort.SortTestHelper;
 
+import java.io.FileInputStream;
 import java.util.Arrays;
+import java.util.Properties;
+import java.util.Set;
 
 
 /**
@@ -62,12 +65,30 @@ public class Test {
         return j;
     }
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         Test test = new Test();
         int[] ints = SortTestHelper.generateRandomArray(10, 1, 10);
 //        test.selectSort(ints);
 //        test.insertSort(ints);
         test.quickSort(ints);
         System.out.println(Arrays.toString(ints));
+    }
+
+    public static void main(String[] args)throws Exception{
+        Properties onlineProperties = new Properties();
+        FileInputStream online = new FileInputStream("/Users/xujinniu/onlie.properties");
+        onlineProperties.load(online);
+        Set<String> onlineSet = onlineProperties.stringPropertyNames();
+
+        Properties prePubProperties = new Properties();
+        FileInputStream prepub = new FileInputStream("/Users/xujinniu/prepub.properties");
+        prePubProperties.load(prepub);
+        Set<String> prepubSet = prePubProperties.stringPropertyNames();
+
+        onlineSet.stream().forEach(e -> {
+            if (!prepubSet.contains(e)){
+                System.out.println(e);
+            }
+        });
     }
 }
