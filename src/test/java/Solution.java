@@ -1,3 +1,5 @@
+import com.sort.SortTestHelper;
+
 /**
  * @author xjn
  * @since 2019-12-17
@@ -24,5 +26,17 @@ public class Solution {
             }
         }
         return head;
+    }
+
+    public static void main(String[] args) {
+        int[] ints = SortTestHelper.generateRandomArray(10, 1, 10);
+
+        for (int i = 1; i < ints.length; i++) {
+            for (int j = 0; j < ints.length - i; j++) {
+                System.out.println("i:" + i + " j:" + j);
+            }
+            System.out.println();
+        }
+
     }
 }
