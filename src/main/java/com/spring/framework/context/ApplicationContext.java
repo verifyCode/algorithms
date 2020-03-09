@@ -45,7 +45,7 @@ public class ApplicationContext implements BeanFactory {
     //然后通过反射机制,创建一个实例并返回
     //Spring不会把原始对象放出去,而是用BeanWrapper来进行包装
     //装饰器模式:
-    //1. 保留远啦的OOP关系
+    //1. 保留原来的OOP关系
     //2. 我需要对他进行扩展,增强 为了以后的aop打基础
     @Override
     public Object getBean(String beanName) {
@@ -83,14 +83,18 @@ public class ApplicationContext implements BeanFactory {
         //定位
         this.beanDefinitionReader = new BeanDefinitionReader(configLocations);
 
-
         //加载
         List<String> classNames = beanDefinitionReader.loadBeanDefinitions();
 
         //注册
+        //1. className --> beanDefinition
+        //2. beanDefinitionMap.put(beanDefinition.getFactoryBeanName(), beanDefinition);
         doRegistry(classNames);
 
         //依赖注入(lazy-init = false 要执行依赖注入)
+        //1. getBean();
+        //   a:beanWrapperMap.put(beanName, beanWrapper);
+        //   b:populateBean()
         doAutowired();
     }
 
@@ -123,6 +127,7 @@ public class ApplicationContext implements BeanFactory {
             }
             field.setAccessible(true);
             try {
+                //
                 field.set(instance, beanWrapperMap.get(autowiredBeanName).getWrappedInstance());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -177,7 +182,7 @@ public class ApplicationContext implements BeanFactory {
             if (this.beanCacheMap.containsKey(className)) {
                 instance = this.beanCacheMap.get(className);
             } else {
-                instance = aClass.isInterface();
+                instance = aClass.newInstance();
                 beanCacheMap.put(className, instance);
             }
             return instance;
