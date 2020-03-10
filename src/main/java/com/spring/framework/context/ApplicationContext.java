@@ -1,18 +1,25 @@
 package com.spring.framework.context;
 
-import com.spring.demo.annotation.Autowired;
-import com.spring.demo.annotation.Service;
+import com.spring.demo.annotation.*;
 import com.spring.framework.beans.BeanDefinition;
 import com.spring.framework.beans.BeanPostProcessor;
 import com.spring.framework.beans.BeanWrapper;
 import com.spring.framework.context.support.BeanDefinitionReader;
 import com.spring.framework.core.BeanFactory;
+import com.spring.framework.webmvc.HandlerAdapter;
+import com.spring.framework.webmvc.HandlerMapping;
+import com.spring.framework.webmvc.ViewResolver;
+import com.sun.tools.javac.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 /**
  * @author xjn
@@ -33,7 +40,6 @@ public class ApplicationContext implements BeanFactory {
 
     //存储所有的被代理过的对象
     private Map<String, BeanWrapper> beanWrapperMap = new ConcurrentHashMap<>();
-
 
     public ApplicationContext(String... location) {
         this.configLocations = location;
@@ -191,4 +197,16 @@ public class ApplicationContext implements BeanFactory {
         }
         return null;
     }
+    public String[] getBeanDefinitionNames() {
+        return this.beanDefinitionMap.keySet().toArray(new String[this.beanDefinitionMap.size()]);
+    }
+
+    public int getBeanDefinitionCount() {
+        return this.beanDefinitionMap.size();
+    }
+
+    public Properties getConfig() {
+        return this.beanDefinitionReader.getConfig();
+    }
+
 }
