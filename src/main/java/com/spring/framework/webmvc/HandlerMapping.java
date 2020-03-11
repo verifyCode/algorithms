@@ -9,9 +9,7 @@ import java.util.regex.Pattern;
  */
 public class HandlerMapping {
     private Object controller;
-
     private Method method;
-
     //url的封装
     private Pattern pattern;
 

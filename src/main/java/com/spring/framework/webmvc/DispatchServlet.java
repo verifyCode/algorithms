@@ -37,11 +37,6 @@ public class DispatchServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             doDispatch(req, resp);
         } catch (Exception e) {
@@ -49,7 +44,14 @@ public class DispatchServlet extends HttpServlet {
         }
     }
 
-    private HandlerMapping getHandler(HttpServletRequest req) {
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        ApplicationContext context = new ApplicationContext(config.getInitParameter(LOCATION));
+        initStrategies(context);
+    }
+
+    private HandlerMapping getHandlerMapping(HttpServletRequest req) {
         //循环handlerMapping
         if (handlerMappings.isEmpty()) {
             return null;
@@ -85,18 +87,19 @@ public class DispatchServlet extends HttpServlet {
 
 
     private void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HandlerMapping handlerMapping = getHandler(request);
+        //controller.method.pattern
+        HandlerMapping handlerMapping = getHandlerMapping(request);
         if (handlerMapping == null) {
             response.getWriter().write("404 Not Found");
             return;
         }
         HandlerAdapter ha = getHandlerAdapter(handlerMapping);
         ModelAndVew mv = ha.handle(request, response, handlerMapping);
-        processDispathResult(response, mv);
+        processDispatchResult(response, mv);
 
     }
 
-    public void processDispathResult(HttpServletResponse resp, ModelAndVew mv) throws Exception {
+    public void processDispatchResult(HttpServletResponse resp, ModelAndVew mv) throws Exception {
         if (null == mv) {
             return;
         }
@@ -117,29 +120,28 @@ public class DispatchServlet extends HttpServlet {
         }
     }
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        ApplicationContext context = new ApplicationContext(config.getInitParameter(LOCATION));
-    }
 
     private void initStrategies(ApplicationContext context) {
-        //文件上传解析
+        //文件上传解析-未实现
         initMultipartResolver(context);
-        //本地化解析
+        //本地化解析-未实现
         initLocaleResolver(context);
-        //主题解析
+        //主题解析View-未实现
         initThemeResolver(context);
-        //请求映射到处理器
+
+        //请求映射到处理器-重要 -->HandlerMapping(controller,method,pattern)
         initHandlerMappings(context);
-        //类型的参数动态匹配
+        //类型的参数动态匹配-重要 -->HandlerAdapter(Map<String, Integer> paramMapping)
+        // this.handlerAdapterMap.put(handlerMapping, new HandlerAdapter(paramMapping));
         initHandlerAdapters(context);
-        //如果执行中遇到异常
+        //如果执行中遇到异常-未实现
         initHandlerExceptionResolvers(context);
-        //直接解析请求到视图
+        //直接解析请求到视图-未实现
         initRequestToViewNameTranslator(context);
-        //解析逻辑视图到具体实现
+        //解析逻辑视图到具体实现-实现
+        //解决一个页面名字和模板文件关联的问题
         initViewResolvers(context);
-        //Flash映射管理器
+        //Flash映射管理器-未实现
         initFlashMapManager(context);
     }
 
@@ -162,6 +164,7 @@ public class DispatchServlet extends HttpServlet {
     }
 
 
+    //主要是用来动态匹配参数的
     private void initHandlerAdapters(ApplicationContext applicationContext) {
         //在初始化阶段,将参数的名字或者类型,按照一定的顺序保存下来.
         //因为后面用反射调用的时候,传的形参是一个数组
@@ -177,7 +180,7 @@ public class DispatchServlet extends HttpServlet {
                 for (Annotation a : parameterAnnotations[i]) {
                     if (a instanceof RequestParam) {
                         String paramName = ((RequestParam) a).value();
-                        if (!Objects.equals(paramName.trim(), i)) {
+                        if (!Objects.equals(paramName.trim(), "")) {
                             paramMapping.put(paramName, i);
                         }
                     }
