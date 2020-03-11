@@ -175,7 +175,7 @@ public class DispatchServlet extends HttpServlet {
             Map<String, Integer> paramMapping = new HashMap<>();
             Annotation[][] parameterAnnotations = handlerMapping.getMethod().getParameterAnnotations();
 
-            //这里只是出了命名参数
+            //这里只是处理了命名参数
             for (int i = 0; i < parameterAnnotations.length; i++) {
                 for (Annotation a : parameterAnnotations[i]) {
                     if (a instanceof RequestParam) {

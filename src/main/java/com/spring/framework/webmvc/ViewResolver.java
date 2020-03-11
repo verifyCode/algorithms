@@ -49,7 +49,6 @@ public class ViewResolver {
             //模板框架的语法是非常复杂，但是，原理是一样的
             //无非都是用正则表达式来处理字符串而已
             //就这么简单，不要认为这个模板框架的语法是有多么的高大上
-            //来我现在来做一个最接地气的模板，也就是咕泡学院独创的模板语法
             String line = null;
             while (null != (line = ra.readLine())) {
                 Matcher m = matcher(line);
