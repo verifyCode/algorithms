@@ -1,6 +1,7 @@
 package com.spring.framework.context;
 
 import com.spring.demo.annotation.*;
+import com.spring.framework.aop.AopConfig;
 import com.spring.framework.beans.BeanDefinition;
 import com.spring.framework.beans.BeanPostProcessor;
 import com.spring.framework.beans.BeanWrapper;
@@ -19,20 +20,19 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * @author xjn
  * @since 2020-03-09
  */
-public class ApplicationContext implements BeanFactory {
+public class ApplicationContext extends DefaultListableBeanFactory implements BeanFactory {
 
     private String[] configLocations;
 
     private BeanDefinitionReader beanDefinitionReader;
 
-    //beanDefinitionMap 保存配置信息
-    private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
     //用来保证注册是单例的容器
     //Key-className
@@ -70,6 +70,8 @@ public class ApplicationContext implements BeanFactory {
 
             BeanWrapper beanWrapper = new BeanWrapper(instance);
             beanWrapper.setPostProcessor(beanPostProcessor);
+            //aop未完
+            beanWrapper.setAopConfig(instantionAopConfig(beanDefinition));
             this.beanWrapperMap.put(beanName, beanWrapper);
             //在实例初始化之后调用一次
             beanPostProcessor.postProcessorAfterInitialization(instance, beanName);
@@ -197,6 +199,7 @@ public class ApplicationContext implements BeanFactory {
         }
         return null;
     }
+
     public String[] getBeanDefinitionNames() {
         return this.beanDefinitionMap.keySet().toArray(new String[this.beanDefinitionMap.size()]);
     }
@@ -207,6 +210,24 @@ public class ApplicationContext implements BeanFactory {
 
     public Properties getConfig() {
         return this.beanDefinitionReader.getConfig();
+    }
+
+    private AopConfig instantionAopConfig(BeanDefinition beanDefinition) throws Exception {
+        AopConfig aopConfig = new AopConfig();
+        String expression = beanDefinitionReader.getConfig().getProperty("pointCut");
+        String[] before = beanDefinitionReader.getConfig().getProperty("aspectBefore").split("\\s");
+        String[] after = beanDefinitionReader.getConfig().getProperty("aspectAfter").split("\\s");
+
+        String beanClassName = beanDefinition.getBeanClassName();
+        Class<?> aClass = Class.forName(beanClassName);
+        Pattern expressionPattern = Pattern.compile(expression);
+        for (Method m : aClass.getMethods()) {
+            Matcher matcher = expressionPattern.matcher(m.toString());
+            if (matcher.matches()) {
+                aopConfig.put(m, aClass.newInstance(), new Method[]{aClass.getMethod(before[1]), aClass.getMethod(after[1])});
+            }
+        }
+        return aopConfig;
     }
 
 }
