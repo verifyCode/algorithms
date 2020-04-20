@@ -20,6 +20,8 @@ public class LRUCache {
     private DoubleLinkedList head, tail;
     private Map<Integer, DoubleLinkedList> map;
 
+    // 0->1
+    // 0<-1
     public LRUCache(int capacity) {
         this.size = 0;
         this.capacity = capacity;
@@ -30,12 +32,12 @@ public class LRUCache {
         tail.pre = head;
     }
 
-
     private void moveToHead(DoubleLinkedList node) {
         removeNode(node);
         addNode(node);
     }
 
+    //在头结点添加
     private void addNode(DoubleLinkedList node) {
         node.pre = head;
         node.post = head.post;
