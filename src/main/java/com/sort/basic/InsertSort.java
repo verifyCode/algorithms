@@ -1,9 +1,6 @@
 package com.sort.basic;
 
 import com.sort.SortTestHelper;
-
-import java.util.Arrays;
-
 /**
  * @author xjn
  * @since 2019-12-05
@@ -55,10 +52,7 @@ public class InsertSort {
             array[j] = element;
         }
     }
-
     public static void main(String[] args) {
-        int[] ints = SortTestHelper.generateRandomArray(10, 1, 10);
-        insertSort2(ints);
-        System.out.println(Arrays.toString(ints));
+
     }
 }

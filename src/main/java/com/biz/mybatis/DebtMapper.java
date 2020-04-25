@@ -2,6 +2,7 @@ package com.biz.mybatis;
 
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +16,6 @@ public interface DebtMapper {
     @Select({"select * from t_dept "})
     List<Map> selectDebt();
 
-//    @Select({"select * from t_dept "})
-//    List<Map> selectDebt(String a);
-
-//
-
-
-    ///超级帅
-//}
+    @Select({"select deptId from emp"})
+    BigDecimal select();
 }

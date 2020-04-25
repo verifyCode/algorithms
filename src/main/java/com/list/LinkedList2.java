@@ -155,7 +155,6 @@ public class LinkedList2<E> implements List<E> {
         for (Node cur = dummyHead.next; cur != null; cur = cur.next)
             res.append(cur + "->");
         res.append("NULL");
-
         return res.toString();
     }
 
