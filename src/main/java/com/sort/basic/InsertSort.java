@@ -1,6 +1,7 @@
 package com.sort.basic;
 
 import com.sort.SortTestHelper;
+
 /**
  * @author xjn
  * @since 2019-12-05
@@ -52,7 +53,12 @@ public class InsertSort {
             array[j] = element;
         }
     }
+
     public static void main(String[] args) {
+        int[] array = SortTestHelper.generateRandomArray(10, 1, 10);
+        for (int i = 1; i < array.length; i++) {
+
+        }
 
     }
 }

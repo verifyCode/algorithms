@@ -2,12 +2,14 @@ package com.biz.producer_cosumer.threadpool.policy;
 
 import com.biz.producer_cosumer.threadpool.exp.RunnableDenyException;
 import com.biz.producer_cosumer.threadpool.ThreadPool;
+import lombok.Cleanup;
 
 /**
  * @author xjn
  * @since 2020-03-04
  */
 public interface DenyPolicy {
+
     void reject(Runnable runnable, ThreadPool threadPool);
 
 
