@@ -12,7 +12,9 @@ public class HeapSort {
 
     public static void heapSort(int[] array) {
         //heapify
-        for (int i = (array.length - 1) / 2; i >= 0; i--) {
+        //[https://coding.imooc.com/lesson/71.html#mid=34008]
+        //最后一个非叶子节点的计算公式不是 (count - 1) / 2 而是(最后一个元素索引值 - 1)/2
+        for (int i = (array.length - 1 - 1) / 2; i >= 0; i--) {
             shiftDown(array, array.length, i);
         }
         //在>=1的位置进行最后一次的交换操作,当最后堆中只剩一个元素的时候,不需要进行任何操作

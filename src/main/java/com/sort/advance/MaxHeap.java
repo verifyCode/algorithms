@@ -38,6 +38,7 @@ public class MaxHeap {
         return count == 0;
     }
 
+    //插入一条元素
     public void insert(int e) {
         data[count + 1] = e;
         count++;
@@ -77,6 +78,7 @@ public class MaxHeap {
                 //更新j的值
                 j += 1;
             }
+            //当前值大于其最大子节点
             if (data[k] >= data[j]) {
                 break;
             }
