@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 /**
  * 归并排序
+ *
  * @author xjn
  * @since 2019-12-07
  */
@@ -77,17 +78,11 @@ public class MergeSort {
 
     }
 
-    public static void main1(String[] args) {
+    public static void main(String[] args) {
         int[] ints = SortTestHelper.generateRandomArray(10, 1, 10);
 //        int[] ints = new int[]{0,1,2};
         mergeSort(ints);
         System.out.println(Arrays.toString(ints));
-    }
-
-    public static void main(String[] args) {
-        int i = 0 ;
-        i = i+++i;
-        System.out.println(i);
     }
 
 }

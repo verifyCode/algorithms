@@ -10,32 +10,44 @@ import java.util.*;
  */
 public class Test {
 
-    public void insertSort(int[] array) {
-        for (int i = 1; i < array.length; i++) {
-            int v = array[i];
-            int j;
-            for (j = i; j > 0; j--) {
-                if (array[j - 1] > v) {
-                    array[j] = array[j - 1];
-                } else {
-                    break;
-                }
+
+    public static void mergeSort(int[] array) {
+        sort(array, 0, array.length - 1);
+    }
+
+    private static void sort(int[] array, int l, int r) {
+        if (l >= r) {
+            return;
+        }
+        int mid = (l + r) / 2;
+        sort(array, l, mid);
+        sort(array, mid + 1, r);
+        merge(array, l, mid, r);
+    }
+
+    private static void merge(int[] array, int l, int mid, int r) {
+        int[] aux = new int[r - l + 1];
+        for (int i = l; i <= r; i++) {
+            aux[i - l] = array[i];
+        }
+        int i = l, j = mid + 1;
+        for (int k = l; k <= r; k++) {
+            if (i > mid) {
+                array[k] = aux[j - l];
+                j++;
+            } else if (j > r) {
+                array[k] = aux[i - l];
+                i++;
+            } else if (aux[i - l] > aux[j - l]) {
+                array[k] = aux[j - l];
+                j++;
+            } else {
+                array[k] = aux[i - l];
+                i++;
             }
-            array[j] = v;
         }
     }
 
-    public void selectSort(int[] array) {
-        for (int i = 0; i < array.length; i++) {
-            int minIndex = i;
-            for (int j = i + 1; j < array.length; j++) {
-                if (array[minIndex] > array[j]) {
-                    minIndex = j;
-                }
-            }
-            SortTestHelper.swap(array, minIndex, i);
-        }
-    }
 
     public static void quickSort(int[] array) {
         quickSort(array, 0, array.length - 1);
@@ -50,10 +62,10 @@ public class Test {
         quickSort(array, p + 1, r);
     }
 
-    public static int partition(int[] array, int l, int r) {
+    private static int partition(int[] array, int l, int r) {
         int v = array[l];
-        int j = l;
-        for (int i = l + 1; i <= r; i++) {
+        int j = l + 1;
+        for (int i = j; i <= r; i++) {
             if (array[i] < v) {
                 SortTestHelper.swap(array, i, j + 1);
                 j++;
@@ -63,21 +75,10 @@ public class Test {
         return j;
     }
 
-    public static void main1(String[] args) {
-        Test test = new Test();
+    public static void main(String[] args) {
         int[] ints = SortTestHelper.generateRandomArray(10, 1, 10);
-//        test.selectSort(ints);
-//        test.insertSort(ints);
-        test.quickSort(ints);
+        mergeSort(ints);
         System.out.println(Arrays.toString(ints));
-    }
-
-    public static void main(String[] args) throws Exception {
-        System.out.println(12345 + 54321L);
-        System.out.println("2132");
-        http://www.baiidu.com
-        System.out.println("2132");
-
     }
 }
 

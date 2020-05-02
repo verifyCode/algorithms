@@ -40,30 +40,53 @@ public class QuickSort {
         return j;
     }
 
-    //三路快速排序处理array[l...r]
+    //双路快速排序处理array[l...r]
     //将array[l...r]
-    public static int partition3Way(int[] array, int l, int r) {
+    public static int partition2Way(int[] array, int l, int r) {
         int v = array[l];
-        int lt = l;//array[l+1...lt] < v
+        //array[l+1...i) <= v; array(j...r] >= v
+        int i = l + 1, j = r;
+        while (true) {
+            while (i <= r && array[i] < v) {
+                i++;
+            }
+            while (j >= l + 1 && array[j] > v) {
+                j--;
+            }
+            if (i > j) {
+                break;
+            }
+            SortTestHelper.swap(array, i, j);
+            i++;
+            j--;
+        }
+        SortTestHelper.swap(array, i, j);
+        return j;
+    }
+
+
+    public static void partition3Way(int[] array, int l, int r) {
+        int v = array[l];
+        int lt = l; //array[l+1...lt] < v
         int gt = r + 1;//array[gt...r] > v
-        int i = l + 1;//array[lt+1...i] =v
+        int i = l + 1;//array[lt+1...i] == v
         while (i < gt) {
             if (array[i] < v) {
                 SortTestHelper.swap(array, i, lt + 1);
-                lt++;
                 i++;
+                lt++;
             } else if (array[i] > v) {
                 SortTestHelper.swap(array, i, gt - 1);
+                //i 不需要动,因为此时交换操作之后,i指向的是没有被处理的元素
                 gt--;
             } else {
+                //arr[i] == v;
                 i++;
             }
         }
         SortTestHelper.swap(array, l, lt);
-
-        //TODO
-        return 0;
-
+        quickSort(array, l, lt - 1);
+        quickSort(array, gt, r);
     }
 
     public static void main(String[] args) {
