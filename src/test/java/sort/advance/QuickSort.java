@@ -1,4 +1,4 @@
-package com.sort.advance;
+package sort.advance;
 
 import com.sort.SortTestHelper;
 
@@ -6,30 +6,26 @@ import java.util.Arrays;
 
 /**
  * @author xjn
- * @since 2019-12-08
+ * @since 2020-05-07
  */
 public class QuickSort {
+
     public static void quickSort(int[] array) {
         quickSort(array, 0, array.length - 1);
     }
 
-    //对array[l...r]进行快速排序
-    public static void quickSort(int[] array, int l, int r) {
+    private static void quickSort(int[] array, int l, int r) {
         if (l >= r) {
             return;
         }
-//        int p = partition(array, l, r);
-        int p = partition2Way(array, l, r);
+        int p = partition(array, l, r);
         quickSort(array, l, p - 1);
         quickSort(array, p + 1, r);
     }
 
-    //array[l...r]进行partition操作
-    //返回p 使得 array[l...p-1] < array[p] < array[p+1,r]
-    public static int partition(int[] array, int l, int r) {
+
+    private static int partition(int[] array, int l, int r) {
         int v = array[l];
-        //array[l+1...j] < v; array[j+1...r] > v;
-        //[a,a,a,v,a,a,a,]
         int j = l;
         for (int i = l + 1; i <= r; i++) {
             if (array[i] < v) {
@@ -41,11 +37,8 @@ public class QuickSort {
         return j;
     }
 
-    //双路快速排序处理array[l...r]
-    //将array[l...r]
-    public static int partition2Way(int[] array, int l, int r) {
+    private static int partition2way(int[] array, int l, int r) {
         int v = array[l];
-        //array[l+1...i) <= v; array(j...r] >= v
         int i = l + 1, j = r;
         while (true) {
             while (i <= r && array[i] < v) {
@@ -66,35 +59,33 @@ public class QuickSort {
     }
 
 
-    public static void partition3Way(int[] array, int l, int r) {
+    private static void partition3way(int[] array, int l, int r) {
         int v = array[l];
-        int lt = l; //array[l+1...lt] < v
-        int gt = r + 1;//array[gt...r] > v
-        int i = l + 1;//array[lt+1...i] == v
+        int lt = l;
+        int i = l + 1;
+        int gt = r + 1;
         while (i < gt) {
             if (array[i] < v) {
-                SortTestHelper.swap(array, i, lt + 1);
-                i++;
+                SortTestHelper.swap(array, lt + 1, i);
                 lt++;
+                i++;
             } else if (array[i] > v) {
-                SortTestHelper.swap(array, i, gt - 1);
-                //i 不需要动,因为此时交换操作之后,i指向的是没有被处理的元素
+                SortTestHelper.swap(array, gt - 1, i);
                 gt--;
             } else {
-                //arr[i] == v;
                 i++;
             }
         }
         SortTestHelper.swap(array, l, lt);
-        quickSort(array, l, lt - 1);
-        quickSort(array, gt, r);
+        partition3way(array, l, lt - 1);
+        partition3way(array, gt, r);
     }
 
     public static void main(String[] args) {
         int[] ints = SortTestHelper.generateRandomArray(10, 1, 10);
         System.out.println(Arrays.toString(ints));
-        partition3Way(ints, 0, ints.length - 1);
-//        quickSort(ints);
+        quickSort(ints);
         System.out.println(Arrays.toString(ints));
+
     }
 }

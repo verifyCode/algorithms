@@ -22,7 +22,17 @@ public class Finally {
     }
 
     public static void main(String[] args) {
-        System.out.println(getResult());
-        System.out.println(value);
+//        System.out.println(getResult());
+//        System.out.println(value);
+        System.out.println(a());
+    }
+
+
+    static int a() {
+        try {
+            return 2;
+        } finally {
+            return 1;
+        }
     }
 }
