@@ -2,6 +2,11 @@ package tree;
 
 import com.tree.Tree;
 
+import java.util.LinkedList;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.Stack;
+
 
 /**
  * @author xjn
@@ -99,7 +104,58 @@ public class AVLTree<E extends Comparable<E>> implements Tree<E> {
         } else if (node.e.compareTo(e) > 0) {
             node.right = addRecursive(node.right, e);
         }
-        node.height =
+        //更新height
+        node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
+
+        //平衡因子
+        int balanceFactory = getBalanceFactor(node);
+
+        //RR
+        if (balanceFactory > 1 && getBalanceFactor(node.left) >= 0) {
+            return rotateRight(node);
+        }
+
+        //LL
+        if (balanceFactory < -1 && getBalanceFactor(node.right) <= 0) {
+            return rotateLeft(node);
+        }
+
+        //LR
+        if (balanceFactory > 1 && getBalanceFactor(node.left) < 0) {
+            node.left = rotateLeft(node.left);
+            return rotateRight(node);
+        }
+
+        //RL
+        if (balanceFactory < -1 && getBalanceFactor(node.right) > 0) {
+            node.right = rotateRight(node.right);
+            return rotateLeft(node);
+        }
+        return node;
+    }
+
+
+    private Node rotateRight(Node y) {
+        Node x = y.left;
+        Node t3 = x.right;
+
+        x.right = y;
+        y.left = t3;
+        y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
+        x.height = Math.max(getHeight(x.right), getHeight(x.left)) + 1;
+        return x;
+    }
+
+    private Node rotateLeft(Node y) {
+        Node x = y.right;
+        Node t3 = x.left;
+
+        x.left = y;
+        y.right = t3;
+
+        y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
+        x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
+        return x;
     }
 
     @Override
@@ -107,49 +163,145 @@ public class AVLTree<E extends Comparable<E>> implements Tree<E> {
         return false;
     }
 
+    private boolean containsRecursive(Node node, E e) {
+        if (node == null) {
+            return false;
+        }
+        if (node.e.compareTo(e) == 0) {
+            return true;
+        } else if (node.e.compareTo(e) > 0) {
+            return containsRecursive(node.left, e);
+        } else {
+            return containsRecursive(node.right, e);
+        }
+    }
+
     @Override
     public void preOrder() {
+        preOrder(root);
+    }
 
+    private void preOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        System.out.print(node);
+        preOrder(node.left);
+        preOrder(node.right);
     }
 
     @Override
     public void inOrder() {
+        inOrder(root);
+    }
 
+    private void inOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        preOrder(node.left);
+        System.out.print(node);
+        preOrder(node.right);
     }
 
     @Override
     public void postOrder() {
+        postOrder(root);
+    }
 
+    private void postOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        postOrder(node.left);
+        postOrder(node.right);
+        System.out.print(node);
     }
 
     @Override
     public void bfs() {
-
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            Node node = queue.remove();
+            System.out.print(node + " ");
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
     }
 
     @Override
     public void dfs() {
-
+        Stack<Node> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            Node nodeFromStack = stack.pop();
+            System.out.print(nodeFromStack.e + " ");
+            if (nodeFromStack.right != null) {
+                stack.push(nodeFromStack.right);
+            }
+            if (nodeFromStack.left != null) {
+                stack.push(nodeFromStack.left);
+            }
+        }
     }
 
     @Override
     public int getTreeDepth() {
-        return 0;
+        return getTreeDepth(root);
+    }
+
+    private int getTreeDepth(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        int left = getTreeDepth(node.left) + 1;
+        int right = getTreeDepth(node.right) + 1;
+        return Math.max(left, right);
     }
 
     @Override
     public E maximum() {
-        return null;
+        return maximum(root).e;
+    }
+
+    private Node maximum(Node node) {
+        if (node == null || node.left == null) {
+            return node;
+        }
+        return maximum(node.left);
     }
 
     @Override
     public E minimum() {
-        return null;
+        return minimum(root).e;
+    }
+
+    private Node minimum(Node node) {
+        if (node == null || node.right == null) {
+            return node;
+        }
+        return minimum(node.right);
     }
 
     @Override
     public E removeMaximum() {
-        return null;
+        E e = maximum();
+        root = removeMaximum(root);
+        return e;
+    }
+
+    private Node removeMaximum(Node node) {
+        if (node.left == null) {
+            size--;
+            return node.right;
+        }
+        node.left = removeMaximum(node.left);
+        return node;
     }
 
     @Override
@@ -157,9 +309,84 @@ public class AVLTree<E extends Comparable<E>> implements Tree<E> {
         return null;
     }
 
+    private Node removeMinimum(Node node) {
+        if (node.right == null) {
+            size--;
+            return node.left;
+        }
+        node.right = removeMinimum(node.right);
+        return node;
+    }
+
     @Override
     public void remove(E e) {
 
+    }
+
+    private Node remove(Node node, E e) {
+        if (node == null) {
+            return null;
+        }
+        Node retNode = null;
+        if (node.e.compareTo(e) < 0) {
+            node.left = remove(node.left, e);
+            retNode = node;
+        } else if (node.e.compareTo(e) > 0) {
+            node.right = remove(node.right, e);
+            retNode = node;
+        }
+        //找到删除的位置 node
+
+        //左子树为空
+        if (node.left == null) {
+            Node rightNode = node.right;
+            node.right = null;
+            size--;
+            retNode = rightNode;
+        } else if (node.right == null) {
+            //右子树为空
+            Node leftNode = node.left;
+            node.left = null;
+            size--;
+            retNode = leftNode;
+        } else {
+            //左右子树不为空
+            Node successor = minimum(node.right);
+            successor.left = node.left;
+            successor.right = removeMinimum(node.right);
+            node.left = node.right = null;
+            retNode = successor;
+        }
+
+        if (retNode == null) {
+            return null;
+        }
+        //更新height
+        retNode.height = Math.max(getHeight(retNode.right), getHeight(retNode.left)) + 1;
+
+        //计算平衡因子
+        int balanceFactor = getBalanceFactor(retNode);
+
+        //右旋
+        if (balanceFactor > 1 && getBalanceFactor(retNode.left) >= 0) {
+            return rotateRight(retNode);
+        }
+        //左旋
+        if (balanceFactor < -1 && getBalanceFactor(retNode.right) <= 0) {
+            return rotateLeft(retNode);
+        }
+
+        //LR
+        if (balanceFactor > 1 && getBalanceFactor(retNode.left) < 0) {
+            retNode.left = rotateLeft(retNode.left);
+            return rotateRight(retNode);
+        }
+        //RL
+        if (balanceFactor < -1 && getBalanceFactor(retNode.right) > 0) {
+            retNode.right = rotateRight(retNode.right);
+            return rotateLeft(retNode);
+        }
+        return retNode;
     }
 
     private void writeArray(Node node, int rowIndex, int columnIndex, String[][] res, int treeDepth) {
