@@ -1,6 +1,8 @@
 package com.lru;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author xjn
@@ -8,78 +10,57 @@ import java.util.Map;
  */
 public class LRUCache {
 
-    private static class DoubleLinkedList {
-        private int value;
-        private int key;
-        private DoubleLinkedList pre;
-        private DoubleLinkedList post;
+    class DoubleLinkedList {
+        int key;
+        int value;
+        DoubleLinkedList prev;
+        DoubleLinkedList next;
+
+        public DoubleLinkedList() {
+        }
+
+        public DoubleLinkedList(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 
     private int size;
     private int capacity;
     private DoubleLinkedList head, tail;
-    private Map<Integer, DoubleLinkedList> map;
+    private Map<Integer, DoubleLinkedList> map = new HashMap<>();
 
-    // 0->1
-    // 0<-1
     public LRUCache(int capacity) {
         this.size = 0;
         this.capacity = capacity;
-        head = new DoubleLinkedList();
-        head.pre = null;
-        tail.post = null;
-        head.post = tail;
-        tail.pre = head;
-    }
-
-    private void moveToHead(DoubleLinkedList node) {
-        removeNode(node);
-        addNode(node);
-    }
-
-    //在头结点添加
-    private void addNode(DoubleLinkedList node) {
-        node.pre = head;
-        node.post = head.post;
-        head.post.pre = node;
-        head.post = node;
-    }
-
-    private void removeNode(DoubleLinkedList node) {
-        DoubleLinkedList pre = node.pre;
-        DoubleLinkedList post = node.post;
-
-        pre.post = post;
-        post.pre = pre;
-
+        this.head = new DoubleLinkedList();
+        this.tail = new DoubleLinkedList();
+        head.next = tail;
+        tail.prev = head;
     }
 
     public int get(int key) {
-        DoubleLinkedList node = map.get(key);
-        //么有命中
-        if (node == null) {
+        DoubleLinkedList node = this.map.get(key);
+        if (Objects.isNull(node)) {
             return -1;
         }
-        //命中,挪到开头
         moveToHead(node);
         return node.value;
     }
 
-    public DoubleLinkedList popTail() {
-        DoubleLinkedList res = tail.pre;
-        removeNode(res);
-        return res;
-    }
-
     public void put(int key, int value) {
         DoubleLinkedList node = map.get(key);
-        if (node == null) {
-            node = new DoubleLinkedList();
-            node.value = value;
-            addNode(node);
+        // 如果 key 不存在，创建一个新的节点
+        if (Objects.isNull(node)) {
+            DoubleLinkedList newNode = new DoubleLinkedList(key, value);
+            // 添加进哈希表
+            map.put(key, newNode);
+            // 添加至双向链表的头部
+            addToHead(newNode);
             size++;
             if (size > capacity) {
-                DoubleLinkedList tail = this.popTail();
+                // 如果超出容量，删除双向链表的尾部节点
+                DoubleLinkedList tail = removeTail();
                 map.remove(tail.key);
                 size--;
             }
@@ -88,5 +69,29 @@ public class LRUCache {
             moveToHead(node);
         }
     }
+
+    private void addToHead(DoubleLinkedList node) {
+        node.prev = head;
+        node.next = head.next;
+        head.next = node;
+        head.next.prev = node;
+    }
+
+    private void removeNode(DoubleLinkedList node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    private void moveToHead(DoubleLinkedList node) {
+        removeNode(node);
+        addToHead(node);
+    }
+
+    private DoubleLinkedList removeTail() {
+        DoubleLinkedList res = tail.prev;
+        removeNode(res);
+        return res;
+    }
+
 
 }
