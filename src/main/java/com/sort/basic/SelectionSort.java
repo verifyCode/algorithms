@@ -5,6 +5,7 @@ import com.sort.SortTestHelper;
 /**
  * 选择排序:
  * 复杂度:O(n^2)
+ * 空间复杂度:O(1)
  *
  * @author xjn
  * @since 2019-12-05

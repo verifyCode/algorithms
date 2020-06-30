@@ -7,6 +7,9 @@ import java.util.Arrays;
 /**
  * @author xjn
  * @since 2020-05-01
+ * 时间复杂度O(n^2)
+ * 空间复杂度O(1)
+ * 稳定排序
  */
 public class BubbleSort {
     public static void sort(int[] array) {
